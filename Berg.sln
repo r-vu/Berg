@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{25F1E551-61A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{696328F3-1616-4354-8AB5-688C694B2BA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Berg", "src\Berg\Berg.csproj", "{5A9926B6-08EC-49A3-B08A-5FA956F21E14}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Berg", "src\Berg\Berg.csproj", "{5A9926B6-08EC-49A3-B08A-5FA956F21E14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Berg.Tests", "tests\Berg.Tests\Berg.Tests.csproj", "{C7D800CF-8B86-4692-B6F3-346F504E078D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Berg.Tests", "tests\Berg.Tests\Berg.Tests.csproj", "{C7D800CF-8B86-4692-B6F3-346F504E078D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

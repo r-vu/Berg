@@ -27,9 +27,5 @@ namespace Berg.Tests {
             return Path.GetRandomFileName().Replace(".", "").Substring(0, length);
         }
 
-        public static int RandomInteger(int lower, int upper) {
-            return RNG.Next(lower, upper);
-        }
-
     }
 }

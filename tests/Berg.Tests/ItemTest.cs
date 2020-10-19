@@ -7,13 +7,7 @@ using System.Threading.Tasks;
 using Xunit;
 
 namespace Berg.Tests {
-    public class ItemTest {
-
-        private static List<Item> ITEM_LIST = new List<Item>() {
-                    new Item("itemOne", 1.00M),
-                    new Item("itemTwo", 2.50M),
-                    new Item("itemThree", 3.33M)
-                };
+    public class ItemTest : BergTestDataTemplate {
 
         [Fact]
         public async Task ItemCreateAndGetTest() {
@@ -69,5 +63,6 @@ namespace Berg.Tests {
                 Assert.Null(resultItem);
             }
         }
+
     }
 }

@@ -55,8 +55,19 @@ namespace Berg.Tests {
         }
 
         [Fact]
-        public void ItemDeleteTest() {
+        public async Task ItemDeleteTest() {
+            using (BergContext context = new BergContext(TestUtilities.TestDbContextOptions())) {
+                await context.Item.AddRangeAsync(ITEM_LIST);
+                await context.SaveChangesAsync();
 
+                int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count());
+                Item chosenItem = await context.Item.FindAsync(chosenIndex);
+                context.Item.Remove(chosenItem);
+                await context.SaveChangesAsync();
+
+                Item resultItem = await context.Item.FindAsync(chosenIndex);
+                Assert.Null(resultItem);
+            }
         }
     }
 }

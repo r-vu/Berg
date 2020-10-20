@@ -33,13 +33,13 @@ namespace Berg.Tests {
                 string newName = TestUtilities.RandomString();
                 decimal newPrice = TestUtilities.RNG.Next(100, 10000) / 100M;
                 int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count());
-                Item chosenItem = await context.Item.FindAsync(chosenIndex);
+                Item chosenItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
                 chosenItem.Name = newName;
                 chosenItem.Price = newPrice;
                 context.Attach(chosenItem).State = EntityState.Modified;
                 await context.SaveChangesAsync();
 
-                Item resultItem = await context.Item.FindAsync(chosenIndex);
+                Item resultItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
                 Assert.Equal(resultItem, chosenItem);
             }
         }
@@ -48,11 +48,11 @@ namespace Berg.Tests {
         public async Task ItemDeleteTest() {
             using (BergContext context = new BergContext(ContextOptions)) {
                 int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count());
-                Item chosenItem = await context.Item.FindAsync(chosenIndex);
+                Item chosenItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
                 context.Item.Remove(chosenItem);
                 await context.SaveChangesAsync();
 
-                Item resultItem = await context.Item.FindAsync(chosenIndex);
+                Item resultItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
                 Assert.Null(resultItem);
             }
         }

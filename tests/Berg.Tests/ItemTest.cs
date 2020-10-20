@@ -2,6 +2,7 @@
 using Berg.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -9,13 +10,11 @@ using Xunit;
 namespace Berg.Tests {
     public class ItemTest : BergTestDataTemplate {
 
+        public ItemTest() : base(DbType.SqliteInMemory) { }
+
         [Fact]
         public async Task ItemCreateAndGetTest() {
-            using (BergContext context = new BergContext(TestUtilities.TestDbContextOptions())) {
-
-                // Arrange
-                await context.Item.AddRangeAsync(ITEM_LIST);
-                await context.SaveChangesAsync();
+            using (BergContext context = new BergContext(ContextOptions)) {
 
                 // Act
                 List<Item> resultList = await context.Item.ToListAsync();
@@ -30,10 +29,7 @@ namespace Berg.Tests {
 
         [Fact]
         public async Task ItemEditTest() {
-            using (BergContext context = new BergContext(TestUtilities.TestDbContextOptions())) {
-                await context.Item.AddRangeAsync(ITEM_LIST);
-                await context.SaveChangesAsync();
-
+            using (BergContext context = new BergContext(ContextOptions)) {
                 string newName = TestUtilities.RandomString();
                 decimal newPrice = TestUtilities.RNG.Next(100, 10000) / 100M;
                 int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count());
@@ -50,10 +46,7 @@ namespace Berg.Tests {
 
         [Fact]
         public async Task ItemDeleteTest() {
-            using (BergContext context = new BergContext(TestUtilities.TestDbContextOptions())) {
-                await context.Item.AddRangeAsync(ITEM_LIST);
-                await context.SaveChangesAsync();
-
+            using (BergContext context = new BergContext(ContextOptions)) {
                 int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count());
                 Item chosenItem = await context.Item.FindAsync(chosenIndex);
                 context.Item.Remove(chosenItem);

@@ -8,11 +8,19 @@ using System.Text;
 namespace Berg.Tests {
     public static class TestUtilities {
 
-        public readonly static Random RNG = new Random();
+        public readonly static Random RNG = new Random(123456789);
+        private readonly static string VALID_CHARACTERS =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\'\"\\,./-()&[]: ";
 
         public static string RandomString() {
-            int length = RNG.Next(3, 12);
-            return Path.GetRandomFileName().Replace(".", "").Substring(0, length);
+            int length = RNG.Next(256);
+            char[] output = new char[length];
+
+            for (int idx = 0; idx < output.Length; idx++) {
+                output[idx] = VALID_CHARACTERS[RNG.Next(VALID_CHARACTERS.Length)];
+            }
+
+            return new string(output);
         }
 
     }

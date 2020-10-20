@@ -8,19 +8,7 @@ using System.Text;
 namespace Berg.Tests {
     public static class TestUtilities {
 
-        public static Random RNG = new Random(123456789);
-
-        public static DbContextOptions<BergContext> TestDbContextOptions() {
-            ServiceProvider serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkInMemoryDatabase()
-                .BuildServiceProvider();
-
-            DbContextOptionsBuilder<BergContext> builder = new DbContextOptionsBuilder<BergContext>()
-                .UseInMemoryDatabase("BergTestDb")
-                .UseInternalServiceProvider(serviceProvider);
-
-            return builder.Options;
-        }
+        public readonly static Random RNG = new Random();
 
         public static string RandomString() {
             int length = RNG.Next(3, 12);

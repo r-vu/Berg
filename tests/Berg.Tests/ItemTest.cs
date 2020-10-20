@@ -13,9 +13,8 @@ namespace Berg.Tests {
         public ItemTest() : base(DbType.SqliteInMemory) { }
 
         [Fact]
-        public async Task ItemCreateAndGetTest() {
+        public async Task Item_GetAll_ContextReturnsAllAsList() {
             using (BergContext context = new BergContext(ContextOptions)) {
-
                 // Act
                 List<Item> resultList = await context.Item.ToListAsync();
 
@@ -28,30 +27,35 @@ namespace Berg.Tests {
         }
 
         [Fact]
-        public async Task ItemEditTest() {
+        public async Task Item_EditAndSave_ContextUpdated() {
+            int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count());
+            Item chosenItem;
+
             using (BergContext context = new BergContext(ContextOptions)) {
-                string newName = TestUtilities.RandomString();
-                decimal newPrice = TestUtilities.RNG.Next(100, 10000) / 100M;
-                int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count());
-                Item chosenItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
-                chosenItem.Name = newName;
-                chosenItem.Price = newPrice;
+                chosenItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
+                chosenItem.Name = TestUtilities.RandomString();
+                chosenItem.Price = TestUtilities.RNG.Next(100, 100000) / 100M;
                 context.Attach(chosenItem).State = EntityState.Modified;
                 await context.SaveChangesAsync();
+            }
 
+            using (BergContext context = new BergContext(ContextOptions)) {
                 Item resultItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
                 Assert.Equal(resultItem, chosenItem);
             }
         }
 
         [Fact]
-        public async Task ItemDeleteTest() {
+        public async Task Item_DeleteAndSave_ContextUpdated() {
+            int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count());
+
             using (BergContext context = new BergContext(ContextOptions)) {
-                int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count());
                 Item chosenItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
                 context.Item.Remove(chosenItem);
                 await context.SaveChangesAsync();
+            }
 
+            using (BergContext context = new BergContext(ContextOptions)) {
                 Item resultItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
                 Assert.Null(resultItem);
             }

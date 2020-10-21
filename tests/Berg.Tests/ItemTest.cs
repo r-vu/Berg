@@ -28,7 +28,7 @@ namespace Berg.Tests {
 
         [Fact]
         public async Task Item_EditAndSave_ContextUpdated() {
-            int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count());
+            int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count);
             Item chosenItem;
 
             using (BergContext context = new BergContext(ContextOptions)) {
@@ -41,13 +41,13 @@ namespace Berg.Tests {
 
             using (BergContext context = new BergContext(ContextOptions)) {
                 Item resultItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
-                Assert.Equal(resultItem, chosenItem);
+                Assert.Equal(chosenItem, resultItem);
             }
         }
 
         [Fact]
         public async Task Item_DeleteAndSave_ContextUpdated() {
-            int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count());
+            int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count);
 
             using (BergContext context = new BergContext(ContextOptions)) {
                 Item chosenItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);

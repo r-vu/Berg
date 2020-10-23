@@ -1,15 +1,27 @@
-﻿namespace Berg.Models {
+﻿using System;
+
+namespace Berg.Models {
     public class Item {
 
         public int ID { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
+        public Uri Image { get; set; }
+
+        private readonly static Uri NO_IMAGE = new Uri("https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg");
 
         public Item() { }
 
         public Item(string name, decimal price) {
             Name = name;
             Price = price;
+            Image = NO_IMAGE;
+        }
+
+        public Item(string name, decimal price, Uri image) {
+            Name = name;
+            Price = price;
+            Image = image;
         }
 
         public override bool Equals(object obj) {
@@ -18,20 +30,22 @@
             return other != null &&
                 ID.Equals(other.ID) &&
                 Name.Equals(other.Name) &&
-                Price.Equals(other.Price);
+                Price.Equals(other.Price) &&
+                Image.Equals(other.Image);
         }
 
         public override int GetHashCode() {
             return unchecked(
                 (ID.GetHashCode()
                 + Name.GetHashCode()
-                + Price.GetHashCode())
+                + Price.GetHashCode()
+                + Image.GetHashCode())
                 .GetHashCode()
             );
         }
 
         public override string ToString() {
-            return string.Format("ID: {0} Name: {1} Price: {2}", ID, Name, Price);
+            return string.Format("ID: {0} Name: {1} Price: {2} Image: {3}", ID, Name, Price, Image);
         }
     }
 }

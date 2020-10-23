@@ -3,14 +3,16 @@ using Berg.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Berg.Migrations
 {
     [DbContext(typeof(BergContext))]
-    partial class BergContextModelSnapshot : ModelSnapshot
+    [Migration("20201023150612_AddImageField")]
+    partial class AddImageField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

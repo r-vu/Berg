@@ -1,10 +1,30 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Berg: Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<div class="container pt-5 mt-5">
+    <div class="row">
+        @for(int idx = 0; idx < 3; idx++) {
+            <div class="col">
+                <figure class="figure">
+                    <img src="./image/graybox.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                    <figcaption class="figure-caption">@(Model.ItemList[idx].Name) $@(Model.ItemList[idx].Price)</figcaption>
+                </figure>
+            </div>
+        }
+    </div>
+
+    <div class="row">
+        @for (int idx = 3; idx < 6; idx++) {
+            <div class="col">
+                <figure class="figure">
+                    <img src="./image/graybox.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
+                    <figcaption class="figure-caption text-justify">@(Model.ItemList[idx].Name) $@(Model.ItemList[idx].Price)</figcaption>
+                </figure>
+            </div>
+        }
+    </div>
 </div>

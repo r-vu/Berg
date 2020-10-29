@@ -1,0 +1,14 @@
+﻿@page
+@model Berg.Pages.SearchModel
+@{
+}
+
+<div class="container">
+    @foreach (Berg.Models.Item item in Model.ItemList) {
+        <div class="row">
+            <div class="col">
+                <a href="~/Items/Details/@item.ID">@item.Name</a>
+            </div>
+        </div>
+    }
+</div>

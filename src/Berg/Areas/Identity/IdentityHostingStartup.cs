@@ -1,5 +1,5 @@
 ﻿using System;
-using Berg.Areas.Identity.Data;
+using Berg.Models;
 using Berg.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -16,12 +16,12 @@ namespace Berg.Areas.Identity
         public void Configure(IWebHostBuilder builder)
         {
             builder.ConfigureServices((context, services) => {
-                services.AddDbContext<BergUserContext>(options =>
+                services.AddDbContext<BergContext>(options =>
                     options.UseSqlServer(
                         context.Configuration.GetConnectionString("BergUserContextConnection")));
 
                 services.AddDefaultIdentity<BergUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<BergUserContext>();
+                    .AddEntityFrameworkStores<BergContext>();
             });
         }
     }

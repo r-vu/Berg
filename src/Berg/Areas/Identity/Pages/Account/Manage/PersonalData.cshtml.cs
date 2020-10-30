@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Berg.Areas.Identity.Data;
+using Berg.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

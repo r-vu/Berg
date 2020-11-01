@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Berg.Models {
     public class Item {
 
+        [Key]
         public int ID { get; set; }
+
         public string Name { get; set; }
         public decimal Price { get; set; }
         public Uri Image { get; set; }
+        public IList<ItemReview> Reviews { get; set; } = new List<ItemReview>();
 
         private readonly static Uri NO_IMAGE = new Uri("https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg");
 

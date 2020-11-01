@@ -13,7 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Berg.Tests {
+namespace Berg.Tests.PageTests {
     public class ItemPageTest : BergTestDataTemplate {
 
         public ItemPageTest() : base(DbType.SqliteInMemory) { }

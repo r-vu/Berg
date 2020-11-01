@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Berg.Tests {
+namespace Berg.Tests.ModelTests {
     public class ItemTest : BergTestDataTemplate {
 
         public ItemTest() : base(DbType.SqliteInMemory) { }

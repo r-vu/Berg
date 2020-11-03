@@ -1,5 +1,6 @@
 ﻿using Berg.Data;
 using Berg.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -7,12 +8,19 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Threading.Tasks;
 
 namespace Berg.Tests {
     public class BergTestDataTemplate : IDisposable {
 
         protected readonly DbContextOptions<BergContext> ContextOptions;
-        private readonly DbConnection Connection;
+        protected IServiceProvider serviceProvider;
+        private DbConnection _connection;
+
+        private static readonly string SQL_SERVER = @"Server=(localdb)\mssqllocaldb;Database=BergTestMsSql;ConnectRetryCount=0";
+        private static readonly string SQLITE = "Filename=BergTestSqlite.db";
+        private static readonly string SQLITE_INMEM = "Filename=:memory:";
+        private static readonly string EFCORE_INMEM = "BergTestEfCore";
 
         protected static readonly List<Item> ITEM_LIST = new List<Item>() {
                     new Item("itemOne", 1.00M),
@@ -29,69 +37,77 @@ namespace Berg.Tests {
 
         public BergTestDataTemplate(DbType dbType) {
             ContextOptions = TestDbContextOptions(dbType);
-            Connection = RelationalOptionsExtension.Extract(ContextOptions).Connection;
-            SeedDatabase();
-        }
 
-        public void Dispose() {
-            if (Connection != null) {
-                Connection.Dispose();
-            }
-        }
-
-        private void SeedDatabase() {
             using (BergContext context = new BergContext(ContextOptions)) {
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
-
-                context.Item.AddRange(ITEM_LIST);
-                context.SaveChanges();
             }
         }
 
-        private static DbContextOptions<BergContext> TestDbContextOptions(DbType dbType) {
-            ServiceProvider serviceProvider;
+        public void Dispose() {
+            if (_connection != null) {
+                _connection.Dispose();
+            }
+        }
+
+        protected async Task SeedItems() {
+            using (BergContext context = new BergContext(ContextOptions)) {
+                await context.Item.AddRangeAsync(ITEM_LIST);
+                await context.SaveChangesAsync();
+            }
+
+        }
+
+        protected async Task SeedUsers() {
+            UserManager<BergUser> userManager = serviceProvider.GetService<UserManager<BergUser>>();
+            await userManager.CreateAsync(new BergUser("test"), "password");
+        }
+
+        private DbContextOptions<BergContext> TestDbContextOptions(DbType dbType) {
+            ServiceCollection services = new ServiceCollection();
             DbContextOptionsBuilder<BergContext> builder = new DbContextOptionsBuilder<BergContext>();
 
             switch (dbType) {
                 // Repeatedly creating instances of SQL Server may have
                 // performance issues, consider using a fixture in the future
                 case DbType.SqlServerLocalDb:
-                    serviceProvider = new ServiceCollection()
-                        .AddEntityFrameworkSqlServer()
-                        .BuildServiceProvider();
-                    builder = builder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=BergTestMsSql;ConnectRetryCount=0");
+                    services.AddEntityFrameworkSqlServer();
+                    services.AddDbContext<BergContext>(options => options.UseSqlServer(SQL_SERVER));
+                    builder.UseSqlServer(SQL_SERVER);
                     break;
                 case DbType.Sqlite:
-                    serviceProvider = new ServiceCollection()
-                        .AddEntityFrameworkSqlite()
-                        .BuildServiceProvider();
-                    builder = builder.UseSqlite("Filename=BergTestSqlite.db");
+                    services.AddEntityFrameworkSqlite();
+                    services.AddDbContext<BergContext>(options => options.UseSqlite(SQLITE));
+                    builder.UseSqlite(SQLITE);
                     break;
                 case DbType.SqliteInMemory:
-                    serviceProvider = new ServiceCollection()
-                        .AddEntityFrameworkSqlite()
-                        .BuildServiceProvider();
-                    builder = builder.UseSqlite(CreateSqliteInMemory());
+                    CreateSqliteInMemory();
+                    services.AddEntityFrameworkSqlite();
+                    services.AddDbContext<BergContext>(options => options.UseSqlite(_connection));
+                    builder.UseSqlite(_connection);
                     break;
                 case DbType.EfCoreInMemory:
-                    serviceProvider = new ServiceCollection()
-                        .AddEntityFrameworkInMemoryDatabase()
-                        .BuildServiceProvider();
-                    builder = builder.UseInMemoryDatabase("BergTestEfCore");
+                    services.AddEntityFrameworkInMemoryDatabase();
+                    services.AddDbContext<BergContext>(options => options.UseInMemoryDatabase(EFCORE_INMEM));
+                    builder.UseInMemoryDatabase(EFCORE_INMEM);
                     break;
                 default:
                     serviceProvider = null;
                     break;
             }
 
+            services.AddLogging();
+            services.AddIdentity<BergUser, IdentityRole>()
+                .AddEntityFrameworkStores<BergContext>()
+                .AddDefaultTokenProviders();
+            serviceProvider = services.BuildServiceProvider();
             return builder.UseInternalServiceProvider(serviceProvider).Options;
         }
 
-        private static DbConnection CreateSqliteInMemory() {
-            SqliteConnection connection = new SqliteConnection("Filename=:memory:");
+        private void CreateSqliteInMemory() {
+            SqliteConnection connection = new SqliteConnection(SQLITE_INMEM);
             connection.Open();
-            return connection;
+            _connection = connection;
         }
     }
 }

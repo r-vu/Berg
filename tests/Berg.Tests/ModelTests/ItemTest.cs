@@ -10,7 +10,9 @@ using Xunit;
 namespace Berg.Tests.ModelTests {
     public class ItemTest : BergTestDataTemplate {
 
-        public ItemTest() : base(DbType.SqliteInMemory) { }
+        public ItemTest() : base(DbType.SqliteInMemory) {
+            SeedItems().Wait();
+        }
 
         [Fact]
         public async Task Item_GetAll_ContextReturnsAllAsList() {
@@ -33,7 +35,7 @@ namespace Berg.Tests.ModelTests {
 
             using (BergContext context = new BergContext(ContextOptions)) {
                 chosenItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
-                chosenItem.Name = TestUtilities.RandomString();
+                chosenItem.Name = TestUtilities.RandomItemName();
                 chosenItem.Price = TestUtilities.RNG.Next(100, 100000) / 100M;
                 context.Attach(chosenItem).State = EntityState.Modified;
                 await context.SaveChangesAsync();

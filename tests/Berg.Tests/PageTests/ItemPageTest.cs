@@ -16,7 +16,9 @@ using Xunit;
 namespace Berg.Tests.PageTests {
     public class ItemPageTest : BergTestDataTemplate {
 
-        public ItemPageTest() : base(DbType.SqliteInMemory) { }
+        public ItemPageTest() : base(DbType.SqliteInMemory) {
+            SeedItems().Wait();
+        }
 
         [Fact]
         public async Task IndexModel_OnGet_PageIsPopulated() {
@@ -50,7 +52,7 @@ namespace Berg.Tests.PageTests {
 
         [Fact]
         public async Task CreateModel_OnPostInvalidModel_ReturnErrorPage() {
-            string newName = TestUtilities.RandomString();
+            string newName = TestUtilities.RandomItemName();
             decimal newPrice = TestUtilities.RNG.Next(100, 10000) / 100M;
             Item newItem = new Item(newName, newPrice);
 
@@ -92,7 +94,7 @@ namespace Berg.Tests.PageTests {
 
         [Fact]
         public async Task CreateModel_OnPostValidModel_RedirectToPage() {
-            string newName = TestUtilities.RandomString();
+            string newName = TestUtilities.RandomItemName();
             decimal newPrice = TestUtilities.RNG.Next(100, 10000) / 100M;
             Item newItem = new Item(newName, newPrice);
 

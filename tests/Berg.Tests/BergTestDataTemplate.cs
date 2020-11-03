@@ -28,6 +28,12 @@ namespace Berg.Tests {
                     new Item("itemThree", 3.33M)
                 };
 
+        protected static readonly List<BergUser> USER_LIST = new List<BergUser>() {
+            new BergUser("testuser1"),
+            new BergUser("testuser2"),
+            new BergUser("testuser3")
+        };
+
         public enum DbType {
             SqlServerLocalDb,
             Sqlite,
@@ -60,7 +66,9 @@ namespace Berg.Tests {
 
         protected async Task SeedUsers() {
             UserManager<BergUser> userManager = serviceProvider.GetService<UserManager<BergUser>>();
-            await userManager.CreateAsync(new BergUser("test"), "password");
+            foreach (BergUser user in USER_LIST) {
+                await userManager.CreateAsync(user);
+            }
         }
 
         private DbContextOptions<BergContext> TestDbContextOptions(DbType dbType) {

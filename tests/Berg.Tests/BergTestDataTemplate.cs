@@ -22,17 +22,19 @@ namespace Berg.Tests {
         private static readonly string SQLITE_INMEM = "Filename=:memory:";
         private static readonly string EFCORE_INMEM = "BergTestEfCore";
 
-        protected static readonly List<Item> ITEM_LIST = new List<Item>() {
+        protected List<Item> ITEM_LIST = new List<Item>() {
                     new Item("itemOne", 1.00M),
                     new Item("itemTwo", 2.50M),
                     new Item("itemThree", 3.33M)
                 };
 
-        protected static readonly List<BergUser> USER_LIST = new List<BergUser>() {
+        protected List<BergUser> USER_LIST = new List<BergUser>() {
             new BergUser("testuser1"),
             new BergUser("testuser2"),
             new BergUser("testuser3")
         };
+
+        protected List<ItemReview> REVIEW_LIST;
 
         public enum DbType {
             SqlServerLocalDb,
@@ -68,6 +70,18 @@ namespace Berg.Tests {
             UserManager<BergUser> userManager = serviceProvider.GetService<UserManager<BergUser>>();
             foreach (BergUser user in USER_LIST) {
                 await userManager.CreateAsync(user);
+            }
+        }
+
+        protected async Task SeedReviews() {
+            // Can only be called after SeedItems and SeedUsers
+            // Otherwise the reviews will have nothing to link to
+            // for foreign keys
+
+            CreateReviews();
+            using (BergContext context = new BergContext(ContextOptions)) {
+                context.ItemReview.AttachRange(REVIEW_LIST);
+                await context.SaveChangesAsync();
             }
         }
 
@@ -116,6 +130,29 @@ namespace Berg.Tests {
             SqliteConnection connection = new SqliteConnection(SQLITE_INMEM);
             connection.Open();
             _connection = connection;
+        }
+
+        private void CreateReviews() {
+            REVIEW_LIST = new List<ItemReview>() {
+            new ItemReview() {
+                Owner = USER_LIST[0],
+                Item = ITEM_LIST[0],
+                Rating = 1.0,
+                Body = "review1"
+            },
+            new ItemReview() {
+                Owner = USER_LIST[1],
+                Item = ITEM_LIST[1],
+                Rating = 2.0,
+                Body = "review2"
+            },
+            new ItemReview() {
+                Owner = USER_LIST[2],
+                Item = ITEM_LIST[2],
+                Rating = 3.0,
+                Body = "review3"
+            }
+    };
         }
     }
 }

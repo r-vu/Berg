@@ -71,7 +71,7 @@ namespace Berg.Tests.ModelTests {
             // Need to implement account disabling before this can be tested
         }
 
-        private static BergUser GetRandomUser() {
+        private BergUser GetRandomUser() {
             return USER_LIST[TestUtilities.RNG.Next(USER_LIST.Count)];
         }
 

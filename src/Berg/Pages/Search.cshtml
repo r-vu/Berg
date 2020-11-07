@@ -4,11 +4,16 @@
 }
 
 <div class="container">
-    @foreach (Berg.Models.Item item in Model.ItemList) {
+    @for (int idxRow = 0; idxRow < 3; idxRow++) {
         <div class="row">
-            <div class="col">
-                <a href="~/Items/Details/@item.ID">@item.Name</a>
-            </div>
+        @for (int idxCol = 0; idxCol < 3; idxCol++) {
+            int idx = idxRow * 3 + idxCol;
+            if (Model.ItemList.Count < idx + 1) {
+                break;
+            } else {
+                <div class="col">@Model.ItemList[idx].Name</div>
+            }
+        }
         </div>
     }
 </div>

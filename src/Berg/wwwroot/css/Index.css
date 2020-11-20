@@ -1,0 +1,10 @@
+﻿html,
+body {
+    min-height: 100% !important;
+    height: 100%;
+}
+
+main,
+.main-content{
+    height: calc(100vh - 57px);
+}

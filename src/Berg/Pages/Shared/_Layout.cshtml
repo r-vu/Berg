@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("Styles", required: false)
 </head>
 <body>
     <header>
@@ -25,9 +25,10 @@
                     </li>
                     <partial name="_LoginPartial" />
                 </ul>
+
             </div>
-            <form class="form-inline" method="get" action="/Search">
-                <input type="text" class="form-control mr-2" placeholder="Search Berg" name="keywords">
+            <form class="form-inline" method="get" action="/search">
+                <input type="text" class="form-control mr-2" placeholder="Search Berg" name="query">
                 <button class="btn btn-light" type="submit">
                     <span>
                         <img width="15" height="15" src="https://upload.wikimedia.org/wikipedia/commons/5/55/Magnifying_glass_icon.svg"/>
@@ -38,6 +39,7 @@
             @*</div>*@
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

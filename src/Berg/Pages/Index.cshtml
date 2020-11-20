@@ -4,27 +4,24 @@
     ViewData["Title"] = "Berg: Home";
 }
 
-
-<div class="container pt-5 mt-5">
-    <div class="row">
-        @for(int idx = 0; idx < 3; idx++) {
-            <div class="col">
-                <figure class="figure">
-                    <img src="./image/graybox.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
-                    <figcaption class="figure-caption">@(Model.ItemList[idx].Name) $@(Model.ItemList[idx].Price)</figcaption>
-                </figure>
-            </div>
-        }
-    </div>
-
-    <div class="row">
-        @for (int idx = 3; idx < 6; idx++) {
-            <div class="col">
-                <figure class="figure">
-                    <img src="./image/graybox.png" class="figure-img img-fluid rounded" alt="A generic square placeholder image with rounded corners in a figure.">
-                    <figcaption class="figure-caption text-justify">@(Model.ItemList[idx].Name) $@(Model.ItemList[idx].Price)</figcaption>
-                </figure>
-            </div>
-        }
+<div class="container d-flex justify-content-center main-content">
+    <div class="align-self-center text-center">
+        <h3 class="mb-2">Welcome to Berg</h3>
+        <h5 class="text-muted mb-3">An Online Shopping Website</h5>
+        <h6>Search for an item, or browse items by category</h6>
+        <footer class="footer mb-auto py-3">
+            <a class="github-button" href="https://github.com/r-vu/Berg" data-color-scheme="no-preference: dark; light: dark; dark: dark;"
+               data-size="large" aria-label="Source Code &amp; Documentation at r-vu/Berg on GitHub">
+                Source Code &amp; Documentation
+            </a>
+        </footer>
     </div>
 </div>
+
+@section Styles {
+    <link rel="stylesheet" type="text/css" href="/css/Index.css" />
+}
+
+@section Scripts {
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+}

@@ -20,6 +20,7 @@ namespace Berg {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddRazorPages(options => options.Conventions.Add(new PageRouteTransformerConvention(new SlugifyParameterTransformer())));
+            services.AddControllers();
 
             services.AddDbContext<BergContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("BergContext")));
@@ -41,7 +42,7 @@ namespace Berg {
                 // User settings.
                 options.User.AllowedUserNameCharacters =
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-                options.User.RequireUniqueEmail = false;
+                options.User.RequireUniqueEmail = true;
             });
 
             services.ConfigureApplicationCookie(options => {
@@ -75,6 +76,7 @@ namespace Berg {
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

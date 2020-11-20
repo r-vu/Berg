@@ -21,7 +21,7 @@ namespace Berg.Pages.Items {
                 return NotFound();
             }
 
-            Item = await _context.Item.FirstOrDefaultAsync(m => m.ID == id);
+            Item = await _context.Item.FirstOrDefaultAsync(m => m.Id == id);
 
             if (Item == null) {
                 return NotFound();
@@ -41,7 +41,7 @@ namespace Berg.Pages.Items {
             try {
                 await _context.SaveChangesAsync();
             } catch (DbUpdateConcurrencyException) {
-                if (!ItemExists(Item.ID)) {
+                if (!ItemExists(Item.Id)) {
                     return NotFound();
                 } else {
                     throw;
@@ -52,7 +52,7 @@ namespace Berg.Pages.Items {
         }
 
         private bool ItemExists(int id) {
-            return _context.Item.Any(e => e.ID == id);
+            return _context.Item.Any(e => e.Id == id);
         }
     }
 }

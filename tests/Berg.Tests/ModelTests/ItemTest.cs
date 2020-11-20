@@ -22,8 +22,8 @@ namespace Berg.Tests.ModelTests {
 
                 // Assert
                 Assert.Equal(
-                    ITEM_LIST.OrderBy(item => item.ID),
-                    resultList.OrderBy(item => item.ID)
+                    ITEM_LIST.OrderBy(item => item.Id),
+                    resultList.OrderBy(item => item.Id)
                     );
             }
         }
@@ -34,7 +34,7 @@ namespace Berg.Tests.ModelTests {
             Item chosenItem;
 
             using (BergContext context = new BergContext(ContextOptions)) {
-                chosenItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
+                chosenItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].Id);
                 chosenItem.Name = TestUtilities.RandomItemName();
                 chosenItem.Price = TestUtilities.RNG.Next(100, 100000) / 100M;
                 context.Attach(chosenItem).State = EntityState.Modified;
@@ -42,7 +42,7 @@ namespace Berg.Tests.ModelTests {
             }
 
             using (BergContext context = new BergContext(ContextOptions)) {
-                Item resultItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
+                Item resultItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].Id);
                 Assert.Equal(chosenItem, resultItem);
             }
         }
@@ -52,13 +52,13 @@ namespace Berg.Tests.ModelTests {
             int chosenIndex = TestUtilities.RNG.Next(ITEM_LIST.Count);
 
             using (BergContext context = new BergContext(ContextOptions)) {
-                Item chosenItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
+                Item chosenItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].Id);
                 context.Item.Remove(chosenItem);
                 await context.SaveChangesAsync();
             }
 
             using (BergContext context = new BergContext(ContextOptions)) {
-                Item resultItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].ID);
+                Item resultItem = await context.Item.FindAsync(ITEM_LIST[chosenIndex].Id);
                 Assert.Null(resultItem);
             }
         }

@@ -32,8 +32,8 @@ namespace Berg.Tests.PageTests {
                 // Assert
                 List<Item> resultList = Assert.IsAssignableFrom<List<Item>>(pageModel.Item);
                 Assert.Equal(
-                    ITEM_LIST.OrderBy(item => item.ID),
-                    resultList.OrderBy(item => item.ID)
+                    ITEM_LIST.OrderBy(item => item.Id),
+                    resultList.OrderBy(item => item.Id)
                     );
             }
         }
@@ -121,7 +121,7 @@ namespace Berg.Tests.PageTests {
             }
 
             using (BergContext context = new BergContext(ContextOptions)) {
-                Item createdItem = await context.Item.FindAsync(newItem.ID);
+                Item createdItem = await context.Item.FindAsync(newItem.Id);
                 Assert.Equal(newItem, createdItem);
             }
         }
@@ -133,7 +133,7 @@ namespace Berg.Tests.PageTests {
                 Item chosenItem = ITEM_LIST[chosenIndex];
                 Pages.Items.DetailsModel pageModel = new Pages.Items.DetailsModel(context);
 
-                IActionResult result = await pageModel.OnGetAsync(chosenItem.ID);
+                IActionResult result = await pageModel.OnGetAsync(chosenItem.Id);
 
                 Assert.IsType<PageResult>(result);
                 Assert.Equal(chosenItem, pageModel.Item);
@@ -161,7 +161,7 @@ namespace Berg.Tests.PageTests {
                 Item chosenItem = ITEM_LIST[chosenIndex];
                 Pages.Items.EditModel pageModel = new Pages.Items.EditModel(context);
 
-                IActionResult result = await pageModel.OnGetAsync(chosenItem.ID);
+                IActionResult result = await pageModel.OnGetAsync(chosenItem.Id);
 
                 Assert.IsType<PageResult>(result);
                 Assert.Equal(chosenItem, pageModel.Item);

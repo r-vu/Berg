@@ -19,7 +19,7 @@ namespace Berg.Pages.Items {
                 return NotFound();
             }
 
-            Item = await _context.Item.FirstOrDefaultAsync(m => m.ID == id);
+            Item = await _context.Item.FirstOrDefaultAsync(m => m.Id == id);
 
             if (Item == null) {
                 return NotFound();

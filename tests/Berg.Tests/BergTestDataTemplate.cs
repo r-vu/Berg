@@ -133,26 +133,13 @@ namespace Berg.Tests {
         }
 
         private void CreateReviews() {
-            REVIEW_LIST = new List<ItemReview>() {
-            new ItemReview() {
-                Owner = USER_LIST[0],
-                Item = ITEM_LIST[0],
-                Rating = 1.0,
-                Body = "review1"
-            },
-            new ItemReview() {
-                Owner = USER_LIST[1],
-                Item = ITEM_LIST[1],
-                Rating = 2.0,
-                Body = "review2"
-            },
-            new ItemReview() {
-                Owner = USER_LIST[2],
-                Item = ITEM_LIST[2],
-                Rating = 3.0,
-                Body = "review3"
+            REVIEW_LIST = new List<ItemReview>();
+
+            for (int idx = 0; idx < ITEM_LIST.Count; idx++) {
+                REVIEW_LIST.Add(new ItemReview(USER_LIST[idx].Id, ITEM_LIST[idx].Id, idx) {
+                    Body = "review " + idx.ToString()
+                });
             }
-    };
         }
     }
 }

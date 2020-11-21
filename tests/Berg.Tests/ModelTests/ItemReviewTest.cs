@@ -30,6 +30,20 @@ namespace Berg.Tests.ModelTests {
         }
 
         [Fact]
+        public async Task ItemReview_GetAllIncludeAll_ContextReturnsAllAsList() {
+            using (BergContext context = new BergContext(ContextOptions)) {
+                List<ItemReview> resultList = await context.ItemReview.Include("Item").Include("Owner").ToListAsync();
+
+                foreach (ItemReview review in resultList) {
+                    Assert.NotNull(review.Item);
+                    Assert.Equal(review.ItemId, review.Item.Id);
+                    Assert.NotNull(review.Owner);
+                    Assert.Equal(review.OwnerId, review.Owner.Id);
+                }
+            }
+        }
+
+        [Fact]
         public async Task ItemReview_CreateReview_ContextUpdated() {
             ItemReview newReview = new ItemReview() {
                 Owner = USER_LIST[TestUtilities.RNG.Next(USER_LIST.Count)],

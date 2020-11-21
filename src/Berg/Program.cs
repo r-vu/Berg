@@ -98,10 +98,7 @@ namespace Berg {
                 if (!await context.ItemReview.AnyAsync()) {
                     Item item = ITEM_LIST[0];
                     BergUser owner = DEFAULT_USER;
-                    ItemReview review = new ItemReview() {
-                        Owner = owner,
-                        Item = item,
-                        Rating = 5.0,
+                    ItemReview review = new ItemReview(owner.Id, item.Id, 5.0) {
                         Body = "Delicious!"
                     };
 

@@ -66,7 +66,7 @@ namespace Berg.Models {
         }
 
         public override string ToString() {
-            return string.Format("ID: {0} Name: {1} Price: {2} Image: {3} Rating: {4}", Id, Name, Price, Image, AverageRating);
+            return string.Format("Id: {0} Name: {1} Price: {2} Image: {3} Rating: {4}", Id, Name, Price, Image, AverageRating);
         }
     }
 }
